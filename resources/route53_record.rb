@@ -6,6 +6,7 @@ property :type,                        String, required: true
 property :ttl,                         Integer, default: 3600
 property :weight,                      String
 property :set_identifier,              String
+property :multi_value_answer,          [true, false], default: false
 property :geo_location,                String
 property :geo_location_country,        String
 property :geo_location_continent,      String
@@ -89,6 +90,10 @@ action_class do
     @ttl ||= new_resource.ttl
   end
 
+  def multi_value_answer
+    @multi_value_answer ||= new_resource.multi_value_answer
+  end
+
   def geo_location_country
     @geo_location_country ||= new_resource.geo_location_country
   end
@@ -161,6 +166,8 @@ action_class do
     }
     if alias_target
       rr_set[:alias_target] = alias_target
+    elsif multi_value_answer
+      rr_set[:multi_value_answer] = multi_value_answer
     elsif geo_location
       rr_set[:set_identifier] = set_identifier
       rr_set[:geo_location] = geo_location
